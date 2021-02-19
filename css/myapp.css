@@ -27,9 +27,15 @@ p{
 i{
 	color: white;
 }
+.links-list a:before{
+	display: none;
+}
+.list{
+	margin: 0;
+}
 /* Menyembunyikan Scroll Bar*/
 ::-webkit-scrollbar {
-    display: none;
+	display: none;
 }
 
 /*=================================*/
@@ -69,7 +75,10 @@ i{
 .navbar .title{
 	color: white;
 }
-
+.navbar-inner .right{
+	margin-right: 1.2rem;
+	margin-top: .5rem;
+}
 
 
 /*=================================*/
@@ -250,6 +259,9 @@ button > .biaya{
 /*			Pembayaran            */
 /*===============================*/
 
+.pembayaran .list{
+	margin: 0;
+}
 .tagihan > p{
 	margin: 0;
 }
@@ -285,6 +297,8 @@ button > .biaya{
 }
 .cara_bayar > .tombol:hover {
 	background-color: #ff2d55;
+}
+.tombol > p:hover{
 	color: white;
 }
 .cara_bayar > .active , .active p{
@@ -294,13 +308,37 @@ button > .biaya{
 .cara_bayar > .tombol:not(:last-child) {
 	margin-right: 1.6rem;
 }
-{
-
-}
 .tombol > p{
 	margin: 0;
 	width: 100%;
 	height: 100%;
+}
+
+
+/*=================================*/
+/*			 Pembelian            */
+/*===============================*/
+
+.sub_pembelian{
+	--f7-page-subnavbar-offset: 33px !important;
+	background-color: rgba(0,0,0,.3);
+	padding: 1rem;
+}
+.jml_pembelian, .total_pembelian{
+	color: white;
+}
+
+.pembelian-inner{
+	width: 100%;
+	height: 100%;
+}
+.pembelian-inner > a{
+	width: 100%;
+	height: 100%;
+}
+.btn_pembelian{
+	height: 100%;
+	border-radius: 0;
 }
 
 
