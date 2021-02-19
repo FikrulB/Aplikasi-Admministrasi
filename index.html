@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Skripsi</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/myapp.css">
+</head>
+<body class="color-theme-pink">
+  <div id="app">
+    <!-- Panel -->
+    <div class="panel panel-left panel-cover panel-resizable panel-init">
+      <div class="page">
+        <div class="page-content page_panel">
+          <div class="panel_center">  
+            <div align="center" class="panel_atas">
+              <img width="60%" alt="Batik O'O" src="img/ofc.png">
+            </div>
+            <div align="center" class="panel_bawah">
+              <h3>AR Jaya Batik</h3>
+            </div>
+          </div>
+          <div class="list panel_home">
+            <ul>
+              <li>
+                <a href="/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Supplier</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/laporan/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Laporan</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Kas / Bank</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Kategori Barang</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/kategori_pengeluaran/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Kategori Pengeluaran</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Retur Barang</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/accordion/" class="panel-close" style="color: black;">
+                  <div class="item-content">
+                    <div class="item-media"><img width="40" src="img/ofc.png"></div>
+                    <div class="item-inner">
+                      <div class="item-title">Keluar</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Close Panel -->
+    <!-- Navbar -->
+    <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="800" data-url="/">
+      <div class="page page-home">
+        <div class="navbar no-shadow">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner sliding">
+            <div class="left">
+              <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons color-white if-not-md">menu</i>
+                <i class="icon material-icons color-white md-only">menu</i>
+              </a>
+            </div>
+          </div>
+          <div class="center">
+            <img src="img/ofc.png" width="85">
+          </div>
+        </div>
+        <!-- Close Navbar -->
+        <div class="page-content main_home">
+          <div class="main_menu">
+            <div class="row">
+              <div class="col">
+                <div class="elevation-1">
+                  <a href="/barang/">  
+                    <div class="header_box_menu">
+                      <img src="img/bisnis/stok_brg.png">
+                    </div>
+                    <div class="content_box_menu">
+                      Stok
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="elevation-2">
+                  <a href="/transaksi/">  
+                    <div class="header_box_menu">
+                      <img src="img/bisnis/transaksi.png">
+                    </div>
+                    <div class="content_box_menu">
+                      Transaksi
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="elevation-3">
+                  <a href="/pembelian/">  
+                    <div class="header_box_menu">
+                      <img src="img/bisnis/pembelian_stok.png">
+                    </div>
+                    <div class="content_box_menu">
+                      Pembelian
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="elevation-4">
+                  <a href="/barang/">  
+                    <div class="header_box_menu">
+                      <img src="img/bisnis/pengeluaran.png">
+                    </div>
+                    <div class="content_box_menu">
+                      Pengeluaran
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Close Menu -->
+        </div>
+        <!-- Modal -->
+        <!-- <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Transaksi Pengeluaran</h5>
+              </div>
+              <div class="modal-body">
+                <div class="list no-hairlines-md">
+                  <ul>
+                    <li>
+                     <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-input-wrap">
+                          <input type="text"  readonly="readonly" id="demo-calendar-default" />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Nilai</div>
+                      <div class="item-input-wrap">
+                        <input type="number">
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Keterangan</div>
+                      <div class="item-input-wrap">
+                        <input type="text">
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="btnModalTutup" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+              <button type="button" class="btn btn-primary">Simpan</button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- Close Modal -->
+    </div>
+  </div>
+</div>
+<script src="js/framework7.bundle.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/routes.js"></script>
+<script src="js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
