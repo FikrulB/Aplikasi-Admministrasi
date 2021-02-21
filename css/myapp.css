@@ -1,0 +1,620 @@
+*, *::after, *::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
+	text-decoration: none;
+	text-decoration-line: none;
+}
+a:hover, a{
+	color: black;
+	text-decoration: none;
+}
+html{
+	box-sizing: border-box;
+	font-size: 62.5%;
+	scroll-behavior: smooth;
+}
+body{
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	overflow-x: hidden;
+}
+td{
+	padding: 0 !important;
+	padding-left: 1rem !important;
+}
+h1, h2, h3, h4, h5, h6{
+	color: #8b533c;;
+}
+p{
+	color: #ff2d55;
+}
+i{
+	color: white;
+}
+.links-list a:before{
+	display: none !important;
+}
+.list{
+	margin: 0;
+}
+
+/* Menyembunyikan Scroll Bar */
+::-webkit-scrollbar {
+	display: none;
+}
+
+
+/*=================================*/
+/*		Kategori Pengeluaran      */
+/*===============================*/
+
+.logo_kategori{
+	margin: 0 40%;
+}
+.text_kategori{
+	color: #ff2d55;
+	text-align: center;
+	margin-top: -17px;
+	font-size: 2rem;
+}
+.btn_kategori{
+	color: white !important;
+	width: 40%;
+	margin: auto;
+}
+
+
+
+/*=================================*/
+/*				Panel             */
+/*===============================*/
+
+.panel_center{
+	padding: 1rem;
+	display: block;
+	position: fixed;
+	max-height: 50vh;
+	z-index: 999;
+	background-color: red;
+}
+.panel_atas{
+	margin-bottom: 1.3rem;
+}
+.panel_bawah h3{
+	color: white;
+}
+.panel_home{
+	display: block;
+	position: absolute;
+	top: 35.6%;
+	margin: 0;
+	z-index: -10;
+	width: 100%;
+}
+
+
+/*=================================*/
+/*			All Navbar            */
+/*===============================*/
+.navbar-inner{
+	background-color: #ff2d55;
+}
+.navbar .title{
+	color: white;
+}
+.navbar-inner .right{
+	margin-right: 1.2rem;
+	margin-top: .5rem;
+}
+
+
+/*=================================*/
+/*			Home/Index            */
+/*===============================*/
+
+.page-home .navbar{
+	height: 45vw;
+}
+.page-home .navbar .left{
+	position: fixed;
+	top: 0;
+	z-index: 999;
+}
+.page-home .navbar .center{
+	width: 50%;
+	text-align: center;
+	z-index: 100;
+	margin: 1rem auto auto;
+}
+.view-main .page-home{
+	padding: .7rem;
+	background-color: #e8e4e3;
+}
+.view-main .main_home{
+	z-index: 999;
+	height: 445px;
+	position: relative;
+	top: 20%;
+	border-radius: 5%;
+}
+.main_menu{
+	position: absolute;
+	bottom: 0;
+	background-color: white;
+	height: 100%;
+	width: 100%;
+	border-radius: 5%;
+	padding: 6rem 3rem;
+}
+.main_menu .row .col{
+	text-align: center;
+	padding: 1rem;
+}
+.header_box_menu{
+	padding: 2rem;
+}
+.header_box_menu img{
+	width: 100%;
+}
+.content_box_menu{
+	font-size: 1.9rem;
+}
+
+
+/*=================================*/
+/*			  Barang              */
+/*===============================*/
+
+.top_barang{
+	display: flex;
+	overflow-x: scroll;
+	scroll-behavior: smooth;
+	padding: 1rem auto;
+	margin-bottom: 1.5rem;
+}
+.top_barang .chip{
+	margin-right: .3rem; 
+}
+.list_barang .barang_content{
+	border-bottom: 1.2px solid rgba(0,0,0,.3);
+	display: flex;
+}
+.list_barang .barang_content:first-child{
+	border-top: 1.2px solid rgba(0,0,0,.3);
+}
+.barang_content > .barang_media{
+	width: 30%;
+}
+.barang_media > img{
+	width: 100%;
+}
+.barang_content > .barang_inner{
+	width: 50%;
+	padding: 1.5rem;
+}
+.barang_inner > .barang_title{
+	font-size: 1.7rem;
+}
+.barang_content > .barang_right{
+	width: 20%;
+	text-align: -webkit-center;
+	padding-top: 10%;
+}
+
+
+/*=================================*/
+/*			Transaksi             */
+/*===============================*/
+
+.toolbar_transaksi{
+	background-color: transparent;
+}
+.toolbar_transaksi > .toolbar-inner{
+	width: 95%;
+	position: relative;
+	margin: auto;
+}
+.toolbar_transaksi .toolbar-inner > a{
+	width: 100%;
+}
+
+
+/*=================================*/
+/*			Keranjang             */
+/*===============================*/
+
+.list_keranjang{
+	display: flex;
+	box-shadow: 0px 3px 3px 0px rgb(0,0,0,.2);
+	margin-bottom: 1rem;
+	position: relative;
+}
+.media_keranjang{
+	width: 30%;
+	padding: .7rem;
+}
+.media_keranjang > img{
+	width: 100%;
+	height: 100%;
+}
+.text_keranjang{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 1rem;
+}
+.inner_keranjang{
+	width: 100%;
+	font-size: 1.5rem;
+}
+.total_keranjang{
+	font-size: 1.5rem;
+	width: 100%;
+	text-align: right;
+	border-top: 1px solid rgba(0,0,0,.3);
+}
+.toolbar_keranjang .toolbar-inner{
+	width: 100%;
+	height: 100%;
+}
+.toolbar_keranjang .toolbar-inner a{
+	width: 100%;
+	height: 100%;
+}
+.toolbar_keranjang .toolbar-inner a button{
+	height: 100%;
+	border-radius: 0;
+	display: flex;
+	flex-wrap: row;
+	padding: 0;
+}
+button > .jumlah{
+	width: 100%;
+	padding: 0 1rem;
+	text-align: left;
+	color: white;
+}
+button > .biaya{
+	color: white;
+	width: 100%;
+	padding: 0 1rem;
+	text-align: right;
+}
+
+
+/*=================================*/
+/*			Pembayaran            */
+/*===============================*/
+
+.pembayaran .list{
+	margin: 0;
+}
+.tagihan > p{
+	margin: 0;
+}
+.tagihan .text_total{
+	margin: 0;
+	padding-left: 1rem;
+	font-size: 1.6rem;
+	color: black;
+	padding-top: .5rem;
+}
+.tagihan .angka_total{
+	margin: 0;
+	padding-left: 1rem;
+	font-size: 2.5rem;
+	color: black;
+	text-align: center;
+	padding-bottom: 1rem;
+}
+.tagihan{
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.cara_bayar{
+	display: flex;
+	flex-direction: row;
+	height: 50px;
+	padding: 1rem;
+}
+.cara_bayar > .tombol{
+	width: 100%;
+	border: 1px solid #ff2d55;
+	text-align: center;
+	padding: .35rem;
+}
+.cara_bayar > .tombol:hover {
+	background-color: #ff2d55;
+}
+.tombol > p:hover{
+	color: white;
+}
+.cara_bayar > .active , .active p{
+	background-color: #ff2d55;
+	color: white;
+}
+.cara_bayar > .tombol:not(:last-child) {
+	margin-right: 1.6rem;
+}
+.tombol > p{
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+
+/*=================================*/
+/*			 Pembelian            */
+/*===============================*/
+
+.sub_pembelian{
+	--f7-page-subnavbar-offset: 33px !important;
+	background-color: rgba(0,0,0,.3);
+	padding: 1rem;
+}
+.jml_pembelian, .total_pembelian{
+	color: white;
+}
+
+.pembelian-inner{
+	width: 100%;
+	height: 100%;
+}
+.pembelian-inner > a{
+	width: 100%;
+	height: 100%;
+}
+.btn_pembelian{
+	height: 100%;
+	border-radius: 0;
+}
+
+
+/*=================================*/
+/*			  Laporan             */
+/*===============================*/
+
+.box_laporan{
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.box_laporan a{
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+.media_laporan{
+	width: 30%;
+	padding: 2rem 1rem;
+}
+.media_laporan img{
+	width: 100%;
+	height: 100%;
+}
+.text_laporan{
+	width: 70%;
+	padding: 2rem 0;
+}
+.judul_text{
+	font-size: 2rem;
+}
+.subtitle_text{
+	font-size: 1.32rem;
+	color: #333;
+}
+
+
+/*=================================*/
+/*			 Supplier             */
+/*===============================*/
+
+.box_supp{
+	box-shadow: 0px 3px 9px rgba(0,0,0,.2);
+	margin-bottom: 1rem;
+}
+.box2_supp{
+	margin-left: 1rem;
+}
+.nama_supp{
+	font-size: 2.3rem;
+}
+.isi_supp{
+	display: flex;
+	font-size: 1.3rem;
+}
+.ikon_isi > i{
+	color: #ff2d55 !important;
+}
+.ikon_isi{
+	padding: .2rem;
+}
+.text_isi{
+	padding: .6rem;
+}
+
+
+/*=================================*/
+/*		 Laporan Transaksi        */
+/*===============================*/
+
+.kotak > a{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	box-shadow: 0px 3px 7px rgb(0 0 0 / 20%);
+	margin-bottom: 1.5rem;
+	padding: .5rem;
+}
+.isi1{
+	width: 35%;
+	display: flex;
+}
+.isi1_1{
+	width: 50%;
+	text-align: center;
+	font-size: 4.5rem;
+}
+.isi1_1_1{
+	width: 50%;
+	font-size: 1.2rem;
+	padding: 1.5rem 0;
+}
+.isi2{
+	width: 65%;
+	padding: 1.2rem 0;
+}
+.isi2_1{
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.isi2_2{
+	text-align: right;
+	font-size: 2rem;
+}
+.laporan_transaksi .top{
+	margin-bottom: 2rem;
+}
+
+
+/*=================================*/
+/*		 	  Laba Rugi           */
+/*===============================*/
+
+.labargugi_box{
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #ff2d55;
+	border-radius: 2%;
+}
+.box_top{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 55px;
+	border-bottom: 1px solid white;
+}
+.box_top .income{
+	width: 50%;
+	text-align: center;
+}
+.income > p:not(:last-child) , .cost > p:not(:last-child){
+	padding: 0;
+	margin: 0;
+	font-size: 1.7rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: black;
+}
+.income > p:not(:first-child) , .cost > p:not(:first-child){
+	padding: 0;
+	margin: 0;
+	font-size: 1.7rem;
+    font-weight: 600;
+    color: black;
+}
+.box_top .cost{
+	width: 50%;
+	text-align: center;
+	border-left: 1px solid #ff2d55;
+}
+.net_profit{
+	padding: .7rem .5rem;
+	border-top: 1px solid #ff2d55;
+}
+.net_profit > p:not(:first-child){
+	margin: 0;
+	color: black;
+	text-align: right;
+	font-size: 1.8rem;
+	font-weight: 600;
+}
+.isi_pendapatan{
+	display: flex;
+	flex-direction: row;
+}
+.bb:before{
+	font-family: framework7-core-icons;
+    font-weight: 400;
+    font-size: 20px;
+    display: block;
+    padding: 1.9rem 0;
+    margin-right: 1rem;
+    width: 8px;
+    height: 14px;
+    font-size: var(--f7-list-chevron-icon-font-size);
+    line-height: 14px;
+    color: var(--f7-list-chevron-icon-color);
+    pointer-events: none;
+    content: var(--f7-list-chevron-icon-right);
+}
+.angka_pendapatan, .type_pendapatan{
+	width: 50%;
+	color: black;
+	font-size: 1.5rem;
+	font-weight: 300;
+}
+.angka_pendapatan{
+	text-align: right;
+}
+.laba_inner .item-title{
+	text-transform: uppercase;
+}
+.net_profit > p:not(:last-child){
+	color: black;
+	text-align: right;
+	margin: 0;
+	text-transform: uppercase;
+	font-size: 1.7rem;
+	font-weight: 300;
+}
+.laba_bersih, .laba_kotor{
+	display: flex;
+	flex-direction: row;
+	height: 48px;
+	background-color: rgba(0,0,0,.2);
+	padding: 1rem calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
+}
+.text_laba, .angka_laba{
+
+	width: 50%;
+	text-transform: uppercase;
+	font-size: var(--f7-list-item-title-font-size);
+    font-weight: var(--f7-list-item-title-font-weight);
+    color: var(--f7-list-item-title-text-color);
+    line-height: var(--f7-list-item-title-line-height);
+}
+.angka_laba{
+	text-align: right;
+}
+
+
+
+/*Top*/
+.top_index{
+	text-align: center;
+	background-color: #ff2d55;
+}
+
+
+/*Tambah Barang*/
+.tambah li h4{
+	margin-right: 2rem;
+	font-size: 2.2rem;
+	color: black;
+}
+.tambah button{
+	padding: 4px;
+	width: 15rem;
+	margin-right: 1.5rem;
+}
+
+
+/*Pengeluaran*/
+.top{
+	margin: .3rem 0;
+}
+#btnBulan{
+	margin-right: 1rem;
+}
+.top .row{
+	width: 100%;
+	padding: 0 1rem;
+	margin: 0;
+}
