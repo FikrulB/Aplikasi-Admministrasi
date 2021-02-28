@@ -11,8 +11,8 @@ var routes = [
     url: './pages/barang/barang.html',
   },
   {
-    path: '/kategori/',
-    url: './pages/barang/kategori.html',
+    path: '/kategori_barang/',
+    url: './pages/barang/kategori_barang.html',
   },
   {
     path: '/tambah_barang/',
@@ -84,6 +84,10 @@ var routes = [
   {
     path: '/kas/',
     url: './pages/lain/kas.html',
+  },
+  {
+    path: '/retur_barang/',
+    url: './pages/lain/retur_barang.html',
   },
 
   // Supplier
