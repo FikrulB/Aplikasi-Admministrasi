@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page" data-name="barang">
   <div class="navbar no-shadow">
     <div class="navbar-bg"></div>
     <div class="navbar-inner sliding">
@@ -9,59 +9,47 @@
         </a>
       </div>
       <div class="title">Barang</div>
+      <div class="right">
+        <!-- Link to enable searchbar -->
+        <a class="link icon-only searchbar-enable" data-searchbar=".searchbar">
+          <i class="icon f7-icons if-not-md">search</i>
+          <i class="icon material-icons md-only">search</i>
+        </a>
+      </div>
+      <form class="searchbar searchbar-expandable">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search"/>
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button">Cancel</span>
+        </div>
+      </form>
     </div>
   </div>
   <!-- FAB Right Bottom (Orange) -->
   <div class="fab fab-right-bottom color-pink">
-    <a href="/tambah_barang/">
+    <a href="/tambah_barang/" class="fab_barang">
       <!-- Icons For iOS Theme -->
       <i class="icon f7-icons if-not-md">plus</i>
       <!-- Icons For MD Theme -->
       <i class="icon material-icons md-only">add</i>
     </a>
   </div>
-  <div class="page-content menu_barang">
-    <!-- kategori chip -->
-    <div class="top_barang">
-      <div class="chip chip-outline color-pink">
-        <div class="chip-label">All Produk</div>
-      </div>
-      <div class="chip chip-outline color-pink">
-        <div class="chip-label">Kategori 1</div>
-      </div>
-      <div class="chip chip-outline color-pink">
-        <div class="chip-label">Kategori 2</div>
-      </div>
-      <div class="chip chip-outline color-pink">
-        <div class="chip-label">Kategori 3</div>
-      </div>
-      <div class="chip chip-outline color-pink">
-        <div class="chip-label">Kategori 4</div>
-      </div>
-      <div class="chip chip-outline color-pink">
-        <div class="chip-label">Kategori 5</div>
-      </div>
-      <!-- End kategori chip -->
-    </div>
-    <!-- list barang -->
-    <div class="list_barang" style="margin-top: auto;">
-      <a href="/tambah_barang/">  
-        <div class="barang_content">
-          <div class="barang_media">
-            <img src="img/bisnis/stok_brg.png" width="44">
-          </div>
-          <div class="barang_inner">
-            <div class="barang_nama">Nama Produk</div>
-            <div class="barang_kode">Kode</div>
-            <div class="barang_harga">Harga</div>
-          </div>
-          <div class="barang_right">
-            <span class="badge">0</span>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- End list barang -->
-  </div>
-</div>
+  <!-- <div class="page-content menu_barang"> -->
+    <div class="page-content">
+      <div class="searchbar-backdrop"></div>
+      <!-- kategori chip -->
+      <div class="top_barang">
 
+      </div>
+      <!-- list barang -->
+      <div class="list media-list list_barang no-hairlines">
+        <ul class="ul_barang">
+          
+        </ul>
+      </div>
+      <!-- End list barang -->
+    </div>
+  </div>

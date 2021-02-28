@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page" data-name="tambah_barang">
   <div class="navbar no-shadow">
     <div class="navbar-bg"></div>
     <div class="navbar-inner sliding">
@@ -19,7 +19,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Nama Barang</div>
               <div class="item-input-wrap">
-                <input type="text" placeholder="Nama Produk" autocomplete="off">
+                <input type="text" id="nama_brg" placeholder="Nama Produk" autocomplete="off">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -28,7 +28,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Kode Barang</div>
               <div class="item-input-wrap">
-                <input type="text" placeholder="Kode Barang" autocomplete="off">
+                <input type="text" id="kode_brg" placeholder="Kode Barang" autocomplete="off">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -40,8 +40,8 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Pilih Kategori</div>
               <div class="item-input-wrap input-dropdown-wrap">
-                <select>
-                  <option value="Male">Pilih Kategori</option>
+                <select id="kategori_brg">
+                  <option value="none">Pilih Kategori</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
@@ -52,7 +52,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Harga Jual</div>
               <div class="item-input-wrap">
-                <input type="text" placeholder="Masukkan Harga" autocomplete="off">
+                <input type="text" id="hjual_brg" placeholder="Masukkan Harga" autocomplete="off">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -67,7 +67,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Stok</div>
               <div class="item-input-wrap">
-                <input type="text" placeholder="Stok" autocomplete="off">
+                <input type="text" id="stok_brg" placeholder="Stok" autocomplete="off">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -77,7 +77,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Harga Beli</div>
               <div class="item-input-wrap">
-                <input type="text" placeholder="Masukkan Harga" autocomplete="off">
+                <input type="text" id="hbeli_brg" placeholder="Masukkan Harga" autocomplete="off">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="block">
-      <button class="button button-fill simpan">Simpan</button>
+      <button class="button button-fill simpan_barang">Simpan</button>
     </div>
   </div>
 </div>
