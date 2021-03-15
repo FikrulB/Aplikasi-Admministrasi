@@ -50,6 +50,28 @@ var gagal_button = app.dialog.create({
   }
 });
 
+function hapusOrderDetail() {
+  app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
+  for (var i=0; i<data.length; i++) {
+    var id_all = data[i].id_brg;
+    app.request({
+      url: "http://localhost/ws/index.php/barang/hapusOrderDetail",
+      type: "POST",
+      data : {
+        'id_brg': id_all
+      },
+      cache: false,
+      beforeSend: function(){
+        app.popup.close();
+      },
+      success: function () {
+        app.views.main.router.back('/', {force: true, ignoreCache: false});
+      }
+    });
+  }
+});
+}
+
 function convertToRupiah(number) {
   
   if (number) {
@@ -238,7 +260,7 @@ $(document).on('page:init', function (e) {
         "hbeli_brg": hbeli,
         "hjual_brg": hjual
       },
-      success: function(data){
+      success: function(){
         app.dialog.create({
           title: '<img src="./img/ofc.png" width="50" class="logo_dialog">',
           text: '<div class="text_dialog">Sukses!</div>',
@@ -266,7 +288,6 @@ $(document).on('page:init', function (e) {
 $(document).on('page:init', function (e) {
   app.request.json("http://localhost/ws/index.php/barang/barang", function(data){
   var buatDaftar = "";
-  console.log(data);
   for(i=0; i<data.length; i++){
     var hjual = convertToRupiah(data[i].hjual_brg);
     buatDaftar +=
@@ -299,6 +320,7 @@ $(document).on('click', '#transaksi_li', function (e) {
   var harga_brg = data[0].hjual_brg;
   var jumlah = 1;
   var sub = parseInt(harga_brg) * jumlah;
+  var status = "order";
   app.request.json("http://localhost/ws/index.php/barang/cariIdOrderDetail?id_brg="+id_brg, function(data){
   if (data.length !== 0) {
     var jml = parseInt(data[0].jml_brg) + 1;
@@ -311,7 +333,8 @@ $(document).on('click', '#transaksi_li', function (e) {
         "id_brg": id_brg,
         "jml_brg": jml,
         "sub_total": subTotal
-      }
+      },
+      cache: false
     });
   }else{
     itemAfter.removeClass('active');
@@ -325,7 +348,9 @@ $(document).on('click', '#transaksi_li', function (e) {
         'harga_brg': harga_brg,
         'jml_brg': jumlah,
         'sub_total': sub,
-      }
+        'status' : status
+      },
+      cache: false
     });
     
   }
@@ -400,7 +425,6 @@ $(document).on('page:init','.page[data-name="keranjang"]', function (e) {
 $(document).on('click', '#edit_orderdetail', function (e) {
   var id_detail = $(this).attr('data-order-detail');
   app.request.json("http://localhost/ws/index.php/barang/cariIdOrderDetail?id_brg="+id_detail, function(data){
-  console.log(data);
   app.dialog.create({
     title: data[0].nama_brg,
     text: `
@@ -429,7 +453,7 @@ $(document).on('click', '#edit_orderdetail', function (e) {
               'id_brg': data[0].id_brg
             },
             cache: false,
-            success: function (data) {
+            success: function () {
               app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
               if (data.length !== 0) {
                 var buatDetail = "";
@@ -488,7 +512,7 @@ $(document).on('click', '#edit_orderdetail', function (e) {
             'sub_total': subtot,
           },
           cache: false,
-          success: function (data) {
+          success: function () {
             app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
             var buatDetail = "";
             var biaya_krjg = 0;
@@ -553,33 +577,18 @@ $(document).on('click', '.hapus-keranjang', function (e) {
           text: '<a class="button button-fill btn_trans">OK</a>',
           color: '#ff2d55',
           onClick: function () {
-            app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-            for (var i=0; i<data.length; i++) {
-              var id_all = data[i].id_brg;
-              app.request({
-                url: "http://localhost/ws/index.php/barang/hapusOrderDetail",
-                type: "POST",
-                data : {
-                  'id_brg': id_all
-                },
-                cache: false,
-                success: function (data) {
-                  app.views.main.router.back('/', {force: true});
-                }
-              });
-            }
-          });
+            hapusOrderDetail();         
+          },
         },
-      },
-      {
-        text: '<a class="button button-fill btn_trans">Cancel</a>',
-        color: '#ff2d55'
-      },
-    ],
-  }).open();
-}else{
-  app.views.main.router.back('/', {force: true});
-}
+        {
+          text: '<a class="button button-fill btn_trans">Cancel</a>',
+          color: '#ff2d55'
+        },
+      ],
+    }).open();
+  }else{
+    app.views.main.router.back('/', {force: true});
+  }
 });
 })
 
@@ -590,62 +599,118 @@ $(document).on('click', '.hapus-keranjang', function (e) {
 
 // Tampilan di pembayaran
 $(document).on('page:init','.page[data-name="pembayaran"]', function (e) {
-  // Total Bayar
-  app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-  var tot = 0;
-  var biaya_krjg = 0; 
+  
+  // Pembayaran via
+  $('.tombol').click(function () {
+    $(".tombol").removeClass("active");
+    $(this).addClass("active");
+  });
+  
+  // Setor Ke
+  app.request.json("http://localhost/ws/index.php/barang/kas", function(data){
+  var kas = "";
   for (i=0; i < data.length; i++) {
-    biaya_krjg+=parseInt(data[i].sub_total);
-    $(".angka_total").html(convertToRupiah(biaya_krjg));
-    
-    tot+=parseInt(data[i].jml_brg);
+    kas += `<option value="`+data[i].nama_kas+`">`+data[i].nama_kas+`</option>`;
+    $('.setorKe').html(kas);
   }
-  $(document).on('click','.btnBayar', function (e) {
-    if ($('.tombol').hasClass("active")) {
-      var text = $('.active').text();
-    }else{
-      var text = "belum";
-    }
-    var bayar = $('#bayar').val();
-    var caan = $('#catatan').val();
-    var kas = $('.setorKe').val();
-    
-    app.request({
-      url: "http://localhost/ws/index.php/barang/tambahTransaksi",
-      type: "POST",
-      data : {
-        'total_biaya' : biaya_krjg,
-        'jenis_bayar' : text,
-        'setor_ke' : kas,
-        'jml_bayar' : bayar,
-        'catatan' : caan
-      },
-      cache: false,
-      success: function (data) {
-        alert("sukses bos");
+});
+
+// Total Bayar
+app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
+var tot = 0;
+var biaya_krjg = 0; 
+for (i=0; i < data.length; i++) {
+  biaya_krjg+=parseInt(data[i].sub_total);
+  $(".angka_total").html(convertToRupiah(biaya_krjg));
+  tot+=parseInt(data[i].jml_brg);
+}
+
+// Klik pembayaran
+$(document).on('click','.btnBayar', function (e) {
+  e.preventDefault();
+  
+  if ($('.tombol').hasClass("active")) {
+    var text = $('.active').text();
+  }else{
+    var text = "belum";
+  }
+  var bayar = $('#bayar').val();
+  var caan = $('#catatan').val();
+  var kas = $('.setorKe').val();
+  
+  app.request.json("http://localhost/ws/index.php/barang/getTransaksi", function(data){
+  var id_transaksi = data.length + 1;
+  console.log(id_transaksi);
+  
+  app.request({
+    url: "http://localhost/ws/index.php/barang/tambahTransaksi",
+    type: "POST",
+    data : { 
+      'id_transaksi' : id_transaksi,
+      'total_biaya' : biaya_krjg,
+      'jenis_bayar' : text,
+      'setor_ke' : kas,
+      'jml_bayar' : bayar,
+      'catatan' : caan
+    },
+    error: function (e) {
+      console.log(e.response);
+    },
+    complete: function () {
+      app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(order){
+      for (i = 0; i < order.length; i++) {
+        var id = order[i].id_brg;
+        app.request({
+          url: "http://localhost/ws/index.php/barang/kurangiStok",
+          type: "POST",
+          data: {
+            "id_brg" : id
+          },
+          cache: false
+        });
       }
     });
+  },
+  success: function () {
+    app.request.json("http://localhost/ws/index.php/barang/tampilCetak?id_transaksi="+id_transaksi, function(data){
+    app.popup.create({
+      content: `
+      <div class="popup sukses_bayar">
+      <div class="block">
+      <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
+      <div class="title">Sukses!</div>
+      <div class="text_sukses">
+      <p></p>
+      </div>
+      <div class="row">
+      <a data-id-transaksi="`+data[0].id_transaksi+`"><button class="col button button-fill btnCetak">Cetak</button></a>
+      <a class="link close-popup"><button class="col button button-fill btnKembali">Kembali</button></a>
+      </div>
+      </div>
+      </div>
+      `,
+    }).open();
   });
-});
-
-
-// Pembayaran via
-$('.tombol').click(function () {
-  $(".tombol").removeClass("active");
-  $(this).addClass("active");
-});
-
-// Setor Ke
-app.request.json("http://localhost/ws/index.php/barang/kas", function(data){
-var kas = "";
-for (i=0; i < data.length; i++) {
-  kas += `
-  <option value="`+data[i].nama_kas+`">`+data[i].nama_kas+`</option>
-  `;
-  $('.setorKe').html(kas);
 }
 });
+});
+});
+});
+
+$(document).on('click','.btnKembali', function (e) {
+  app.popup.close();
+  app.views.main.router.back('/', {force: true, ignoreCache: true});
+});
+
+$(document).on('click','.btnCetak', function (e) {
+  console.log("hai");
+});
+
 })
+
+
+
+
 
 
 //==================================================================================================//
@@ -690,7 +755,7 @@ $(document).on('page:init', function (e) {
         data : {
           "kategori_brg": kategori
         },
-        success: function(data){
+        success: function(){
           sukses_button.open();
         }
       });
@@ -732,7 +797,7 @@ $(document).on('click', '#hapusKategori', function (e) {
     data : {
       kategori: kategori
     },
-    success: function(data){
+    success: function(){
       app.dialog.alert("Naise");
       app.request.json("http://localhost/ws/index.php/barang/kategori", function(data){
       buatKategori = "<li>";
@@ -796,9 +861,8 @@ for(i=0; i<data.length; i++){
   </tr>
   `;
   $("#contoo").html(buat);
-  
 }
-})
+});
 
 // Sukses membuat pengeluaran
 $(document).on('page:init', function (e) {

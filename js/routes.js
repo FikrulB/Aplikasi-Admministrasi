@@ -143,6 +143,13 @@ var routes = [
     },
   },
   {
+    path: '/sukses_pembayaran/',
+    url: './pages/lain/sukses_pembayaran.html',
+    options: {
+      transition: 'f7-push',
+    },
+  },
+  {
     path: '/retur_barang/',
     url: './pages/lain/retur_barang.html',
     options: {
