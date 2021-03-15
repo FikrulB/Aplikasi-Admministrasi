@@ -278,6 +278,10 @@ i{
 /*			Transaksi             */
 /*===============================*/
 
+.btn_trans{
+	color: white !important; 
+}
+
 .list_transaksi li{
 	border-bottom: 1px solid rgba(0,0,0,.2);
 }
@@ -294,7 +298,14 @@ i{
 	font-size: 0;
 	width: 25px;
 	height: 25px;
+	border-radius: 50%;
 	background: url(../img/check-circle-solid.svg) no-repeat;
+	animation: bounce .3s ease-in;
+}
+@keyframes bounce{
+	0%{
+		transform: scale(1);
+	}
 }
 .toolbar_transaksi .toolbar-inner a{
 	width: 100%;
@@ -320,6 +331,19 @@ i{
 /*			Keranjang             */
 /*===============================*/
 
+.jumlah_keranjang, .biaya_keranjang{
+	color: white !important;
+	width: 100%;
+	padding: 0 1rem;
+	font-size: 1.7rem;
+	text-transform: capitalize;
+}
+.jumlah_keranjang{
+	text-align: left;
+}
+.biaya_keranjang{
+	text-align: right;
+}
 .dialog-text{
 	text-align: center;
 }
@@ -329,8 +353,8 @@ i{
 .btn{
 	width: 100%;
 }
-.keranjang li {
-	border-bottom: 1px solid var(--f7-list-border-color);;	
+.keranjang li{
+	border-bottom: 1px solid var(--f7-list-border-color);
 }
 .keranjang .item-title{
 	font-size: 1.7rem;
@@ -348,7 +372,7 @@ i{
 }
 .keranjang i{
 	text-align: right;
-    margin-bottom: .5rem;
+	margin-bottom: .5rem;
 }
 .toolbar_keranjang .toolbar-inner{
 	width: 100%;
@@ -386,6 +410,9 @@ button > .biaya{
 .pembayaran .list{
 	margin: 0;
 }
+.pembayaran select{
+	text-transform: capitalize;
+}
 .tagihan > p{
 	margin: 0;
 }
@@ -416,26 +443,16 @@ button > .biaya{
 .cara_bayar > .tombol{
 	width: 100%;
 	border: 1px solid #ff2d55;
+	color: #ff2d55;
 	text-align: center;
 	padding: .35rem;
 }
-.cara_bayar > .tombol:hover {
-	background-color: #ff2d55;
-}
-.tombol > p:hover{
-	color: white;
-}
-.cara_bayar > .active , .active p{
+.cara_bayar .active{
 	background-color: #ff2d55;
 	color: white;
 }
 .cara_bayar > .tombol:not(:last-child) {
 	margin-right: 1.6rem;
-}
-.tombol > p{
-	margin: 0;
-	width: 100%;
-	height: 100%;
 }
 
 
@@ -526,6 +543,24 @@ button > .biaya{
 .text_isi{
 	padding: .6rem;
 }
+
+
+/*=================================*/
+/*		 	Kas / Bank            */
+/*===============================*/
+
+.kas li {
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.kas .item-inner{
+	padding-right: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-right)) !important;
+}
+.kas .item-title, .kas .item-after{
+	text-transform: capitalize;
+	font-size: 1.7rem;
+}
+
+
 
 
 /*=================================*/
@@ -714,4 +749,32 @@ button > .biaya{
 	width: 100%;
 	padding: 0 1rem;
 	margin: 0;
+}
+
+/*=================================*/
+/*		 	Sukses Bayar          */
+/*===============================*/
+
+.sukses_bayar .block{
+	padding: 0;
+    margin: 0;
+    text-align: center;
+    font-size: 3rem;
+    position: absolute;
+    width: 100%;
+    top: 30%;
+}
+.sukses_bayar .title-logo{
+	margin-bottom: .5rem;
+}
+.sukses_bayar .row{
+	width: 60%;
+	margin: 0 auto;
+	text-align: center;
+}
+.sukses_bayar .popup-close{
+	width: 50%;
+}
+.sukses_bayar button{
+	margin-right: 1rem;
 }
