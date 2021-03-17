@@ -143,8 +143,8 @@ var routes = [
     },
   },
   {
-    path: '/sukses_pembayaran/',
-    url: './pages/lain/sukses_pembayaran.html',
+    path: '/cetak_transaksi/',
+    url: './pages/lain/cetak_transaksi.html',
     options: {
       transition: 'f7-push',
     },

@@ -63,9 +63,6 @@ function hapusOrderDetail() {
       cache: false,
       beforeSend: function(){
         app.popup.close();
-      },
-      success: function () {
-        app.views.main.router.back('/', {force: true, ignoreCache: false});
       }
     });
   }
@@ -174,7 +171,7 @@ $(document).on('page:init', function (e) {
     `;
     $(".top_barang").html(buatChip);
   }
-})
+});
 })
 
 
@@ -184,7 +181,6 @@ $(document).on('click', '#all_produk', function (e) {
   app.request.json("http://localhost/ws/index.php/barang/barang", function(data){
   buatTampil = "";
   for(i=0; i<data.length; i++){
-    
     buatTampil +=
     `
     <li>
@@ -236,49 +232,48 @@ $(document).on('click', '#cip', function (e) {
       $(".ul_barang").html(buatTampil);
     }
   }
-})
+});
 })
 
 
 // Tambah Barang
-$(document).on('page:init', function (e) {
-  $(".simpan_barang").click(function () {
-    var nama = $('#nama_brg').val();
-    var kode = $('#kode_brg').val();
-    var kategori = $('#kategori_brg').val();
-    var stok = $('#stok_brg').val();
-    var hbeli = $('#hbeli_brg').val();
-    var hjual = $('#hjual_brg').val();
-    app.request({
-      url: "http://localhost/ws/index.php/barang/tambahBarang",
-      type: "POST",
-      data : {
-        "nama_brg": nama,
-        "kode_brg": kode,
-        "stok_brg": stok,
-        "kategori_brg": kategori,
-        "hbeli_brg": hbeli,
-        "hjual_brg": hjual
-      },
-      success: function(){
-        app.dialog.create({
-          title: '<img src="./img/ofc.png" width="50" class="logo_dialog">',
-          text: '<div class="text_dialog">Sukses!</div>',
-          buttons: [
-            {
-              text: '<a class="button button-fill btn_dialog">OK</a>',
-              color: '#ff2d55'
-            }
-          ],
-          verticalButtons: true,
-          onClick: function () {
-            app.views.main.router.navigate('/barang/');
+$(document).on('click', '.simpan_barang', function (e) {
+  var nama = $('#nama_brg').val();
+  var kode = $('#kode_brg').val();
+  var kategori = $('#kategori_brg').val();
+  var stok = $('#stok_brg').val();
+  var hbeli = $('#hbeli_brg').val();
+  var hjual = $('#hjual_brg').val();
+  app.request({
+    url: "http://localhost/ws/index.php/barang/tambahBarang",
+    type: "POST",
+    data : {
+      "nama_brg": nama,
+      "kode_brg": kode,
+      "stok_brg": stok,
+      "kategori_brg": kategori,
+      "hbeli_brg": hbeli,
+      "hjual_brg": hjual
+    },
+    success: function(){
+      app.dialog.create({
+        title: '<img src="./img/ofc.png" width="50" class="logo_dialog">',
+        text: '<div class="text_dialog">Sukses!</div>',
+        buttons: [
+          {
+            text: '<a class="button button-fill btn_dialog">OK</a>',
+            color: '#ff2d55'
           }
-        }).open();
-      }
-    });
-  })
+        ],
+        verticalButtons: true,
+        onClick: function () {
+          app.views.main.router.navigate('/barang/');
+        }
+      }).open();
+    }
+  });
 })
+
 
 //==================================================================================================//
 //============================    TRANNSAKSI    ============================//
@@ -307,12 +302,13 @@ $(document).on('page:init', function (e) {
     $(".ul_transaksi").html(buatDaftar);
   }
 });
+
 })
 
 $(document).on('click', '#transaksi_li', function (e) {
   var id = $(this).attr('data-barang');
   var itemAfter = $('#item-after'+id);
-  itemAfter.addClass('active');
+  
   app.request.json("http://localhost/ws/index.php/barang/cariId?id_brg="+id, function(data){
   var id_brg = data[0].id_brg;
   var nama_brg = data[0].nama_brg;
@@ -321,11 +317,12 @@ $(document).on('click', '#transaksi_li', function (e) {
   var jumlah = 1;
   var sub = parseInt(harga_brg) * jumlah;
   var status = "order";
+  
   app.request.json("http://localhost/ws/index.php/barang/cariIdOrderDetail?id_brg="+id_brg, function(data){
   if (data.length !== 0) {
     var jml = parseInt(data[0].jml_brg) + 1;
     var subTotal = jml * parseInt(data[0].harga_brg);
-    itemAfter.removeClass('active');
+    
     app.request({
       url: "http://localhost/ws/index.php/barang/updateOrderDetail",
       type: "PUT",
@@ -334,10 +331,15 @@ $(document).on('click', '#transaksi_li', function (e) {
         "jml_brg": jml,
         "sub_total": subTotal
       },
+      beforeSend: function () {
+        itemAfter.addClass('active');
+      },
+      complete: function () {
+        itemAfter.removeClass('active');
+      },
       cache: false
     });
   }else{
-    itemAfter.removeClass('active');
     app.request({
       url: "http://localhost/ws/index.php/barang/tambahOrderDetail",
       type: "POST",
@@ -349,6 +351,12 @@ $(document).on('click', '#transaksi_li', function (e) {
         'jml_brg': jumlah,
         'sub_total': sub,
         'status' : status
+      },
+      beforeSend: function () {
+        itemAfter.addClass('active');
+      },
+      complete: function () {
+        itemAfter.removeClass('active');
       },
       cache: false
     });
@@ -578,6 +586,7 @@ $(document).on('click', '.hapus-keranjang', function (e) {
           color: '#ff2d55',
           onClick: function () {
             hapusOrderDetail();         
+            app.views.main.router.back('/', {force: true, ignoreCache: true});
           },
         },
         {
@@ -587,7 +596,7 @@ $(document).on('click', '.hapus-keranjang', function (e) {
       ],
     }).open();
   }else{
-    app.views.main.router.back('/', {force: true});
+    app.views.main.router.back('/', {force: true, ignoreCache: true});
   }
 });
 })
@@ -600,13 +609,14 @@ $(document).on('click', '.hapus-keranjang', function (e) {
 // Tampilan di pembayaran
 $(document).on('page:init','.page[data-name="pembayaran"]', function (e) {
   
-  // Pembayaran via
+  // =========================  Transfer atau Tunai  ============================= //
   $('.tombol').click(function () {
     $(".tombol").removeClass("active");
     $(this).addClass("active");
   });
+  // =========================  End Transfer atau Tunai  ============================= //
   
-  // Setor Ke
+  // =========================  Setor Ke  ======================================== //
   app.request.json("http://localhost/ws/index.php/barang/kas", function(data){
   var kas = "";
   for (i=0; i < data.length; i++) {
@@ -614,102 +624,117 @@ $(document).on('page:init','.page[data-name="pembayaran"]', function (e) {
     $('.setorKe').html(kas);
   }
 });
+// =========================  End Setor Ke  ======================================== //
 
-// Total Bayar
+// =========================  Total Bayar  ============================= //
 app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
 var tot = 0;
 var biaya_krjg = 0; 
 for (i=0; i < data.length; i++) {
   biaya_krjg+=parseInt(data[i].sub_total);
   $(".angka_total").html(convertToRupiah(biaya_krjg));
+  $(".angka_total").append(`<font class="totBayar" data-total-bayar="`+biaya_krjg+`"></font>`);
   tot+=parseInt(data[i].jml_brg);
 }
 
-// Klik pembayaran
-$(document).on('click','.btnBayar', function (e) {
-  e.preventDefault();
-  
-  if ($('.tombol').hasClass("active")) {
-    var text = $('.active').text();
-  }else{
-    var text = "belum";
-  }
-  var bayar = $('#bayar').val();
-  var caan = $('#catatan').val();
-  var kas = $('.setorKe').val();
-  
-  app.request.json("http://localhost/ws/index.php/barang/getTransaksi", function(data){
-  var id_transaksi = data.length + 1;
-  console.log(id_transaksi);
-  
-  app.request({
-    url: "http://localhost/ws/index.php/barang/tambahTransaksi",
-    type: "POST",
-    data : { 
-      'id_transaksi' : id_transaksi,
-      'total_biaya' : biaya_krjg,
-      'jenis_bayar' : text,
-      'setor_ke' : kas,
-      'jml_bayar' : bayar,
-      'catatan' : caan
-    },
-    error: function (e) {
-      console.log(e.response);
-    },
-    complete: function () {
-      app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(order){
-      for (i = 0; i < order.length; i++) {
-        var id = order[i].id_brg;
-        app.request({
-          url: "http://localhost/ws/index.php/barang/kurangiStok",
-          type: "POST",
-          data: {
-            "id_brg" : id
-          },
-          cache: false
-        });
-      }
-    });
-  },
-  success: function () {
-    app.request.json("http://localhost/ws/index.php/barang/tampilCetak?id_transaksi="+id_transaksi, function(data){
-    app.popup.create({
-      content: `
-      <div class="popup sukses_bayar">
-      <div class="block">
-      <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
-      <div class="title">Sukses!</div>
-      <div class="text_sukses">
-      <p></p>
-      </div>
-      <div class="row">
-      <a data-id-transaksi="`+data[0].id_transaksi+`"><button class="col button button-fill btnCetak">Cetak</button></a>
-      <a class="link close-popup"><button class="col button button-fill btnKembali">Kembali</button></a>
-      </div>
-      </div>
-      </div>
-      `,
-    }).open();
-  });
-}
 });
-});
-});
-});
-
-$(document).on('click','.btnKembali', function (e) {
-  app.popup.close();
-  app.views.main.router.back('/', {force: true, ignoreCache: true});
-});
-
-$(document).on('click','.btnCetak', function (e) {
-  console.log("hai");
-});
+// =========================  End Total Bayar  ======================================== //
 
 })
+// =========================  End Pembayaran  ============================= //
 
 
+// =========================  Button btnBayar  ============================= //
+$(document).on('click','#btnBayar', function (e) {
+  
+  if ($('.tombol').hasClass("active")) {
+    var via = $('.active').text();
+  }else{
+    var via = "belum";
+  }
+  var totBayar = $('.totBayar').attr('data-total-bayar');
+  var jmlBayar = $('#bayar').val();
+  var catatan = $('#catatan').val();
+  var setorKe = $('.setorKe').val();
+  
+  app.input.validateInputs('.pembayaran');
+  var valid = $('.form-pembayaran .input-invalid').length === 0;
+  
+  if (valid == true && via !== "belum") {
+    // ===================  Tambah Data Transaksi  ======================== //
+    app.request({
+      url: "http://localhost/ws/index.php/barang/tambahTransaksi",
+      type: "POST",
+      data : { 
+        'total_biaya' : totBayar,
+        'jenis_bayar' : via,
+        'setor_ke' : setorKe,
+        'jml_bayar' : jmlBayar,
+        'catatan' : catatan
+      },
+      cache: false,
+      complete: function () {
+        app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
+        for (i=0; i < data.length; i++) {
+          var id_brg = data[i].id_brg;
+          app.request({
+            url: "http://localhost/ws/index.php/barang/kurangiStok",
+            type: "PUT",
+            data : { 
+              'id_brg' : id_brg
+            }
+          });  
+        }
+      });
+    },
+    success: function (response) {
+      app.popup.create({
+        content: `
+        <div class="popup sukses_bayar">
+        <div class="block">
+        <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
+        <div class="title">Sukses!</div>
+        <div class="text_sukses">
+        <p></p>
+        </div>
+        <div class="row">
+        <a data-cetak-transaksi="`+response+`"><button class="col button button-fill btnCetak">Cetak</button></a>
+        <a ><button class="col button button-fill btnKembali">Kembali</button></a>
+        </div>
+        </div>
+        </div>
+        `,
+      }).open();
+    },
+  });
+  // ===================  End Tambah Data Transaksi  ======================== //  
+}else if(via == "belum"){
+  alert("pilih pembayaran melalui transfer atau tunai bos!");
+}else if(valid == false){
+  app.input.validateInputs('.pembayaran');
+}
 
+
+});
+// =========================  End Button btnBayar  ======================================== //
+
+// =========================  Button btnKembali  ======================================== //
+
+$(document).on('click', '.btnKembali',function () {
+  hapusOrderDetail();
+  app.views.main.router.back('/', {force: true, ignoreCache: true});
+})
+
+// =========================  End Button btnKembali  ======================================== //
+
+// =========================  Button btnCetak  ======================================== //
+
+$(document).on('click', '.btnCetak',function () {
+  hapusOrderDetail();
+  app.views.main.router.navigate('/cetak_transaksi/', {reloadCurrent: true, animate: false, ignoreCache: true});
+})
+
+// =========================  End Button btnCetak  ======================================== //
 
 
 
