@@ -13,8 +13,8 @@
   </div>
   <div class="toolbar toolbar-bottom no-hairline no-shadow toolbar_transaksi">
     <div class="toolbar-inner">
-      <a href="#">   
-        <button class="button button-fill color-pink btnBayar">
+      <a href="#" id="btnBayar">   
+        <button class="button button-fill color-pink">
           Bayar
         </button>
       </a>
@@ -30,39 +30,30 @@
       <div class="tombol">Transfer</div>
     </div>
     <div class="list no-hairlines-md">
-      <ul>
+      <ul class="form-pembayaran">
         <li class="item-content item-input">
           <div class="item-inner">
             <div class="item-title item-label">Setor Ke</div>
             <div class="item-input-wrap input-dropdown-wrap">
               <select class="setorKe" placeholder="Please choose...">
-
+                
               </select>
             </div>
           </div>
         </li>
         <li class="item-content item-input item-input-outline">
           <div class="item-inner">
-            <div class="item-title item-floating-label">Bayar</div>
             <div class="item-input-wrap">
-             <input id="bayar" type="number" placeholder="Jumlah uang" autocomplete="off" />
-              <span class="input-clear-button"></span>
+              <input id="bayar" type="number" placeholder="Jumlah uang" autocomplete="off" data-error-message="Harus Diisi!" required validate>
             </div>
           </div>
         </li>
         <li class="item-content item-input item-input-outline">
           <div class="item-inner">
-            <div class="item-title item-floating-label">Catatan</div>
             <div class="item-input-wrap">
-              <input id="catatan" type="text" placeholder="Catatan" autocomplete="off" />
-              <span class="input-clear-button"></span>
+              <input id="catatan" autocomplete="off" type="text" placeholder="Catatan" data-error-message="Harus Diisi!" required validate>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>/div>
         </li>
       </ul>
     </div>
