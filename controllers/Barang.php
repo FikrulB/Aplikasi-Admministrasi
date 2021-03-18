@@ -104,14 +104,33 @@ class Barang extends REST_Controller{
 	
 	// Tambah di tabel transaksi
 	function tambahTransaksi_post(){
-		$transaksi = $this->db->insert('transaksi', $this->post());
-		$id_transaksi = $this->db->insert_id();
+		$bulan = date('m');
+		$tahun = date('Y');
+		$thn = substr($tahun, 2, 2);
+		$voice = getAutoNumber('transaksi','invoice','LN - ' . $bulan . $thn ,13);
+		$tambah = array(
+			'invoice' => $voice,
+			'tgl_transaksi' => $this->post('tgl_transaksi'),
+			'total_biaya' => $this->post('total_biaya'),
+			'jenis_bayar' => $this->post('jenis_bayar'),
+			'setor_ke' => $this->post('setor_ke'),
+			'jml_bayar' => $this->post('jml_bayar'), 
+			'catatan' => $this->post('catatan'),
+		);
+		$transaksi = $this->db->insert('transaksi', $tambah);
+		
 		// Jika berhasil maka menyimpan detail transaksi
 		if($transaksi){
 			$order = $this->db->get_where('order_detail', array('status' => 'order'));
+			$query = $this->db->select('invoice')
+			->from('transaksi')
+			->order_by('invoice', 'desc')
+			->limit(1)->get()->row_array();
+			$invoice = $query['invoice'];
+			
 			foreach ($order->result_array() as $a){
 				$send = array(
-					'id_transaksi' => $id_transaksi,
+					'invoice' => $invoice,
 					'id_brg' => $a['id_brg'],
 					'nama_brg' => $a['nama_brg'],
 					'kode_brg' => $a['kode_brg'],
