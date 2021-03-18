@@ -657,54 +657,63 @@ $(document).on('click','#btnBayar', function (e) {
   var catatan = $('#catatan').val();
   var setorKe = $('.setorKe').val();
   
+  var tglTransaksi = new Date();
+  var hari = tglTransaksi.getDay();
+  var bulan = tglTransaksi.getMonth();
+  var tahun = tglTransaksi.getUTCFullYear();
+  var hariTransaksi = tahun+'-'+bulan+'-'+hari;
+
+  
   app.input.validateInputs('.pembayaran');
   var valid = $('.form-pembayaran .input-invalid').length === 0;
   
-  if (valid == true && via !== "belum") {
+  if (valid == true && via !== "belum" && parseInt(jmlBayar) >= parseInt(totBayar)) {
     // ===================  Tambah Data Transaksi  ======================== //
     app.request({
       url: "http://localhost/ws/index.php/barang/tambahTransaksi",
       type: "POST",
       data : { 
         'total_biaya' : totBayar,
+        'tgl_transaksi' : hariTransaksi,
         'jenis_bayar' : via,
         'setor_ke' : setorKe,
         'jml_bayar' : jmlBayar,
         'catatan' : catatan
       },
       cache: false,
-      complete: function () {
-        app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-        for (i=0; i < data.length; i++) {
-          var id_brg = data[i].id_brg;
-          app.request({
-            url: "http://localhost/ws/index.php/barang/kurangiStok",
-            type: "PUT",
-            data : { 
-              'id_brg' : id_brg
-            }
-          });  
-        }
-      });
-    },
+    //   complete: function () {
+    //     app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
+    //     for (i=0; i < data.length; i++) {
+    //       var id_brg = data[i].id_brg;
+    //       app.request({
+    //         url: "http://localhost/ws/index.php/barang/kurangiStok",
+    //         type: "PUT",
+    //         data : { 
+    //           'id_brg' : id_brg
+    //         }
+    //       });  
+    //     }
+    //   });
+    // },
     success: function (response) {
-      app.popup.create({
-        content: `
-        <div class="popup sukses_bayar">
-        <div class="block">
-        <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
-        <div class="title">Sukses!</div>
-        <div class="text_sukses">
-        <p></p>
-        </div>
-        <div class="row">
-        <a data-cetak-transaksi="`+response+`"><button class="col button button-fill btnCetak">Cetak</button></a>
-        <a ><button class="col button button-fill btnKembali">Kembali</button></a>
-        </div>
-        </div>
-        </div>
-        `,
-      }).open();
+      // app.popup.create({
+      //   content: `
+      //   <div class="popup sukses_bayar">
+      //   <div class="block">
+      //   <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
+      //   <div class="title">Sukses!</div>
+      //   <div class="text_sukses">
+      //   <p></p>
+      //   </div>
+      //   <div class="row">
+      //   <a data-cetak-transaksi="`+response+`"><button class="col button button-fill btnCetak">Cetak</button></a>
+      //   <a ><button class="col button button-fill btnKembali">Kembali</button></a>
+      //   </div>
+      //   </div>
+      //   </div>
+      //   `,
+      // }).open();
+      console.log(response);
     },
   });
   // ===================  End Tambah Data Transaksi  ======================== //  
@@ -712,6 +721,8 @@ $(document).on('click','#btnBayar', function (e) {
   alert("pilih pembayaran melalui transfer atau tunai bos!");
 }else if(valid == false){
   app.input.validateInputs('.pembayaran');
+}else if(parseInt(jmlBayar) < parseInt(totBayar)){
+  alert("Bayarnya kurang lah bang");
 }
 
 
