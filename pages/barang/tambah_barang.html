@@ -14,22 +14,18 @@
   <div class="page-content">
     <div class="card card-outline">
       <div class="list no-hairlines-md tambah">
-        <ul>
+        <ul class="form-tambahBarang input-with-value">
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
-              <div class="item-title item-floating-label">Nama Barang</div>
               <div class="item-input-wrap">
-                <input type="text" id="nama_brg" placeholder="Nama Produk" autocomplete="off">
-                <span class="input-clear-button"></span>
+                <input type="text" id="nama_brg" placeholder="Nama Produk" data-error-message="Harus Diisi!" autocomplete="off" required validate/>
               </div>
             </div>
           </li>
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
-              <div class="item-title item-floating-label">Kode Barang</div>
               <div class="item-input-wrap">
-                <input type="text" id="kode_brg" placeholder="Kode Barang" autocomplete="off">
-                <span class="input-clear-button"></span>
+                <input type="text" id="kode_brg" placeholder="Kode Barang" data-error-message="Harus Diisi!" autocomplete="off" required validate/>
               </div>
             </div>
             <button class="button button-fill">
@@ -38,47 +34,24 @@
           </li>
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
-              <div class="item-title item-floating-label">Pilih Kategori</div>
               <div class="item-input-wrap input-dropdown-wrap">
                 <select id="kategori_brg">
-                  <option value="none">Pilih Kategori</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  
                 </select>
               </div>
             </div>
           </li>
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
-              <div class="item-title item-floating-label">Harga Jual</div>
               <div class="item-input-wrap">
-                <input type="text" id="hjual_brg" placeholder="Masukkan Harga" autocomplete="off">
-                <span class="input-clear-button"></span>
+                <input type="number" id="hjual_brg" placeholder="Masukkan Harga Jual" data-error-message="Harus Diisi!" autocomplete="off" required validate/>
               </div>
             </div>
           </li>
-        </ul>
-      </div>
-    </div>
-    <div class="card card-outline">
-      <div class="list no-hairlines-md tambah">
-        <ul>
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
-              <div class="item-title item-floating-label">Stok</div>
               <div class="item-input-wrap">
-                <input type="text" id="stok_brg" placeholder="Stok" autocomplete="off">
-                <span class="input-clear-button"></span>
-              </div>
-            </div>
-            <h4>Pcs</h4>
-          </li>
-          <li class="item-content item-input item-input-outline">
-            <div class="item-inner">
-              <div class="item-title item-floating-label">Harga Beli</div>
-              <div class="item-input-wrap">
-                <input type="text" id="hbeli_brg" placeholder="Masukkan Harga" autocomplete="off">
-                <span class="input-clear-button"></span>
+                <input type="number" id="hbeli_brg" placeholder="Masukkan Harga Beli" data-error-message="Harus Diisi!" autocomplete="off" required validate/>
               </div>
             </div>
           </li>
