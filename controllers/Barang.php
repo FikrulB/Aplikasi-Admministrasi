@@ -6,7 +6,6 @@ class Barang extends REST_Controller{
 		$data = $this->db->
 		select('*')
 		->from('barang')
-		->where('stok_brg >', 0)
 		->get()->result_array();
 		$this->response($data);
 	}
@@ -14,6 +13,15 @@ class Barang extends REST_Controller{
 	// Tambah Barang
 	function tambahBarang_post(){
 		$data = $this->db->insert('barang',$this->post());
+		$this->response($data);
+	}
+	
+	function kategoriBarang_get(){
+		$kode = $this->get('kategori_brg');
+		$data = $this->db->
+		select('*')
+		->from('kategori_barang')
+		->get()->result_array();
 		$this->response($data);
 	}
 	
@@ -104,18 +112,20 @@ class Barang extends REST_Controller{
 	
 	// Tambah di tabel transaksi
 	function tambahTransaksi_post(){
+		$hari = date('d');
 		$bulan = date('m');
 		$tahun = date('Y');
+		$tgl = date('y' . 'm' . 'd');
 		$thn = substr($tahun, 2, 2);
 		$voice = getAutoNumber('transaksi','invoice','LN - ' . $bulan . $thn ,13);
 		$tambah = array(
 			'invoice' => $voice,
-			'tgl_transaksi' => $this->post('tgl_transaksi'),
-			'total_biaya' => $this->post('total_biaya'),
-			'jenis_bayar' => $this->post('jenis_bayar'),
-			'setor_ke' => $this->post('setor_ke'),
-			'jml_bayar' => $this->post('jml_bayar'), 
-			'catatan' => $this->post('catatan'),
+			'tgl_transaksi' => $tgl,
+			'total_biaya' => $this->input->post('total_biaya'),
+			'jenis_bayar' => $this->input->post('jenis_bayar'),
+			'setor_ke' => $this->input->post('setor_ke'),
+			'jml_bayar' => $this->input->post('jml_bayar'), 
+			'catatan' => $this->input->post('catatan'),
 		);
 		$transaksi = $this->db->insert('transaksi', $tambah);
 		
@@ -140,17 +150,46 @@ class Barang extends REST_Controller{
 				);
 				$detail = $this->db->insert('transaksi_detail', $send);
 			}
+			$this->response($invoice);
 		}
 	}
 	
 	// Tampil Cetak
 	function tampilCetak_get(){
-		$id = $this->get('id_transaksi');
+		$id = $this->get('invoice');
 		$data = $this->db->
-		select('transaksi.*,transaksi_detail.*')
+		select('*')
+		->from('transaksi_detail')
+		->join('transaksi','transaksi.invoice=transaksi_detail.invoice')
+		->where('transaksi.invoice',$id)
+		->get()->result_array();
+		$this->response($data);
+	}
+	
+	function laporanTrans_get(){
+		$bulan = date('m');
+		$tglBulan = $this->get("bulan");
+		if ($tglBulan !== "") {
+			$data = $this->db->
+			select('*')
+			->from('transaksi')
+			->where('MONTH(tgl_transaksi)', $tglBulan)
+			->get()->result_array();
+			$this->response($data);	
+		}else{
+			$data = $this->db->
+			select('*')
+			->from('transaksi')
+			->where('MONTH(tgl_transaksi)', $bulan)
+			->get()->result_array();
+			$this->response($data);	
+		}
+	}
+	
+	function laporanTransaksi_get(){
+		$data = $this->db->
+		select('*')
 		->from('transaksi')
-		->join('transaksi_detail','transaksi_detail.id_transaksi=transaksi.id_transaksi')
-		->where('transaksi_detail.id_transaksi',$id)
 		->get()->result_array();
 		$this->response($data);
 	}
