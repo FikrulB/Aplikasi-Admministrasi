@@ -197,7 +197,7 @@ $(document).on('click', '#all_produk', function (e) {
     `;
     $(".ul_barang").html(buatTampil);
   }
-})
+});
 })
 
 
@@ -235,43 +235,59 @@ $(document).on('click', '#cip', function (e) {
 });
 })
 
+$(document).on('page:init', function (e) {
+  app.request.json("http://localhost/ws/index.php/barang/kategoriBarang", function(data){
+  var kategori = `<option value="">Pilih Kategori</option>`;
+  for (i=0; i < data.length; i++) {
+    kategori += `<option value="`+data[i].kategori_brg+`">`+data[i].kategori_brg+`</option>`;
+    $('#kategori_brg').html(kategori);
+  }
+});
+})
 
 // Tambah Barang
 $(document).on('click', '.simpan_barang', function (e) {
+  
   var nama = $('#nama_brg').val();
   var kode = $('#kode_brg').val();
   var kategori = $('#kategori_brg').val();
-  var stok = $('#stok_brg').val();
   var hbeli = $('#hbeli_brg').val();
   var hjual = $('#hjual_brg').val();
-  app.request({
-    url: "http://localhost/ws/index.php/barang/tambahBarang",
-    type: "POST",
-    data : {
-      "nama_brg": nama,
-      "kode_brg": kode,
-      "stok_brg": stok,
-      "kategori_brg": kategori,
-      "hbeli_brg": hbeli,
-      "hjual_brg": hjual
-    },
-    success: function(){
-      app.dialog.create({
-        title: '<img src="./img/ofc.png" width="50" class="logo_dialog">',
-        text: '<div class="text_dialog">Sukses!</div>',
-        buttons: [
-          {
-            text: '<a class="button button-fill btn_dialog">OK</a>',
-            color: '#ff2d55'
-          }
-        ],
-        verticalButtons: true,
-        onClick: function () {
-          app.views.main.router.navigate('/barang/');
-        }
-      }).open();
-    }
-  });
+  app.input.validateInputs('.form-tambahBarang');
+  var validTambahBarang = $('.form-tambahBarang .input-invalid').length === 0;
+  if (validTambahBarang == true && kategori !== "") {
+    app.request({
+      url: "http://localhost/ws/index.php/barang/tambahBarang",
+      type: "POST",
+      data : {
+        "nama_brg": nama,
+        "kode_brg": kode,
+        "stok_brg": stok,
+        "kategori_brg": kategori,
+        "hbeli_brg": hbeli,
+        "hjual_brg": hjual
+      },
+      success: function(){
+        app.dialog.create({
+          title: '<img src="./img/ofc.png" width="50" class="logo_dialog">',
+          text: '<div class="text_dialog">Sukses!</div>',
+          buttons: [
+            {
+              text: '<a class="button button-fill btn_dialog">OK</a>',
+              color: '#ff2d55',
+              onClick: function () {
+                app.views.main.router.navigate('/barang/');
+              }
+            }
+          ],
+          verticalButtons: true,
+        }).open();
+      }
+    });
+  }else{
+    console.log("tidak bisa diisi");
+  }
+  
 })
 
 
@@ -279,8 +295,7 @@ $(document).on('click', '.simpan_barang', function (e) {
 //============================    TRANNSAKSI    ============================//
 //==================================================================================================//
 
-// ini tampilan data barang di transaksi
-$(document).on('page:init', function (e) {
+function tampilBarang() {
   app.request.json("http://localhost/ws/index.php/barang/barang", function(data){
   var buatDaftar = "";
   for(i=0; i<data.length; i++){
@@ -302,8 +317,13 @@ $(document).on('page:init', function (e) {
     $(".ul_transaksi").html(buatDaftar);
   }
 });
+}
 
-})
+
+// ini tampilan data barang di transaksi
+$(document).on('page:init', function (e) {
+  tampilBarang();
+});
 
 $(document).on('click', '#transaksi_li', function (e) {
   var id = $(this).attr('data-barang');
@@ -314,55 +334,62 @@ $(document).on('click', '#transaksi_li', function (e) {
   var nama_brg = data[0].nama_brg;
   var kode_brg = data[0].kode_brg;
   var harga_brg = data[0].hjual_brg;
+  var stokBrg = data[0].stok_brg;
   var jumlah = 1;
   var sub = parseInt(harga_brg) * jumlah;
   var status = "order";
   
-  app.request.json("http://localhost/ws/index.php/barang/cariIdOrderDetail?id_brg="+id_brg, function(data){
-  if (data.length !== 0) {
-    var jml = parseInt(data[0].jml_brg) + 1;
-    var subTotal = jml * parseInt(data[0].harga_brg);
-    
-    app.request({
-      url: "http://localhost/ws/index.php/barang/updateOrderDetail",
-      type: "PUT",
-      data: {
-        "id_brg": id_brg,
-        "jml_brg": jml,
-        "sub_total": subTotal
-      },
-      beforeSend: function () {
-        itemAfter.addClass('active');
-      },
-      complete: function () {
-        itemAfter.removeClass('active');
-      },
-      cache: false
-    });
+  if (stokBrg <= 0) {
+    itemAfter.attr("disabled","disabled");
+    itemAfter.removeAttr('href');
+    console.log("ga bisa diklik");
   }else{
-    app.request({
-      url: "http://localhost/ws/index.php/barang/tambahOrderDetail",
-      type: "POST",
-      data : {
-        'id_brg': id_brg,
-        'nama_brg': nama_brg,
-        'kode_brg' : kode_brg,
-        'harga_brg': harga_brg,
-        'jml_brg': jumlah,
-        'sub_total': sub,
-        'status' : status
-      },
-      beforeSend: function () {
-        itemAfter.addClass('active');
-      },
-      complete: function () {
-        itemAfter.removeClass('active');
-      },
-      cache: false
-    });
-    
-  }
-});
+    app.request.json("http://localhost/ws/index.php/barang/cariIdOrderDetail?id_brg="+id_brg, function(data){
+    if (data.length !== 0) {
+      var jml = parseInt(data[0].jml_brg) + 1;
+      var subTotal = jml * parseInt(data[0].harga_brg);
+      
+      app.request({
+        url: "http://localhost/ws/index.php/barang/updateOrderDetail",
+        type: "PUT",
+        data: {
+          "id_brg": id_brg,
+          "jml_brg": jml,
+          "sub_total": subTotal
+        },
+        beforeSend: function () {
+          itemAfter.addClass('active');
+        },
+        complete: function () {
+          itemAfter.removeClass('active');
+        },
+        cache: false
+      });
+    }else{
+      app.request({
+        url: "http://localhost/ws/index.php/barang/tambahOrderDetail",
+        type: "POST",
+        data : {
+          'id_brg': id_brg,
+          'nama_brg': nama_brg,
+          'kode_brg' : kode_brg,
+          'harga_brg': harga_brg,
+          'jml_brg': jumlah,
+          'sub_total': sub,
+          'status' : status
+        },
+        beforeSend: function () {
+          itemAfter.addClass('active');
+        },
+        complete: function () {
+          itemAfter.removeClass('active');
+        },
+        cache: false
+      });
+      
+    }
+  });
+}
 });
 })
 
@@ -394,39 +421,47 @@ $(document).on('click', '#btnTransaksi', function (e) {
 //============================    KERANJANG    ============================//
 //==================================================================================================//
 
-// Tampilan Keranjang
-$(document).on('page:init','.page[data-name="keranjang"]', function (e) {
+function tampilKeranjang() {
   app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-  var buatDetail = "";
-  var jml_krjg = 0;
-  var biaya_krjg  = 0;
-  for(i=0; i<data.length; i++){
-    var harga = convertToRupiah(data[i].harga_brg);
-    var sub_total = convertToRupiah(data[i].sub_total);
-    buatDetail +=
-    `
-    <li>
-    <a href="#" id="edit_orderdetail" data-order-detail="`+data[i].id_brg+`" class="item-link item-content">
-    <div class="item-media"><img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg"
-    width="50" /></div>
-    <div class="item-inner">
-    <div class="item-title">`+data[i].nama_brg+`</div>
-    <div class="item-subtitle">`+harga+` x `+data[i].jml_brg+`</div>
-    </div>
-    <div class="item-after">
-    <i class="fas fa-pencil-alt fa-1x"></i>
-    <div class="sub_total">`+sub_total+`</div>
-    </div>
-    </a>
-    </li>
-    `;
-    $(".ul_orderdetail").html(buatDetail);
-    jml_krjg+=parseInt(data[i].jml_brg);
-    biaya_krjg+=parseInt(data[i].sub_total);
-    $(".jumlah_keranjang").html(jml_krjg + " Barang");
-    $(".biaya_keranjang").html(convertToRupiah(biaya_krjg));
+  if (data.length !== 0) {
+    var buatDetail = "";
+    var jml_krjg = 0;
+    var biaya_krjg  = 0;
+    for(i=0; i<data.length; i++){
+      var hg = convertToRupiah(data[i].harga_brg);
+      var sub_total = convertToRupiah(data[i].sub_total);
+      buatDetail +=
+      `
+      <li>
+      <a href="#" id="edit_orderdetail" data-order-detail="`+data[i].id_brg+`" class="item-link item-content">
+      <div class="item-media"><img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg"
+      width="50" /></div>
+      <div class="item-inner">
+      <div class="item-title">`+data[i].nama_brg+`</div>
+      <div class="item-subtitle">`+hg+` x `+data[i].jml_brg+`</div>
+      </div>
+      <div class="item-after">
+      <i class="fas fa-pencil-alt fa-1x"></i>
+      <div class="sub_total">`+sub_total+`</div>
+      </div>
+      </a>
+      </li>
+      `;
+      $(".ul_orderdetail").html(buatDetail);
+      jml_krjg+=parseInt(data[i].jml_brg);
+      biaya_krjg+=parseInt(data[i].sub_total);
+      $(".jumlah_keranjang").html(jml_krjg + " Barang");
+      $(".biaya_keranjang").html(convertToRupiah(biaya_krjg));
+    }
+  }else{
+    app.views.main.router.back('/transaksi/', {force: true});
   }
 });
+}
+
+// Tampilan Keranjang
+$(document).on('page:init','.page[data-name="keranjang"]', function (e) {
+  tampilKeranjang();
 })
 
 // Fungsi klik pada barang yang di order detail
@@ -461,115 +496,47 @@ $(document).on('click', '#edit_orderdetail', function (e) {
               'id_brg': data[0].id_brg
             },
             cache: false,
-            success: function () {
-              app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-              if (data.length !== 0) {
-                var buatDetail = "";
-                var jml_krjg = 0;
-                var biaya_krjg  = 0;
-                for(i=0; i<data.length; i++){
-                  var hg = convertToRupiah(data[i].harga_brg);
-                  var sub_total = convertToRupiah(data[i].sub_total);
-                  buatDetail +=
-                  `
-                  <li>
-                  <a href="#" id="edit_orderdetail" data-order-detail="`+data[i].id_brg+`" class="item-link item-content">
-                  <div class="item-media"><img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg"
-                  width="50" /></div>
-                  <div class="item-inner">
-                  <div class="item-title">`+data[i].nama_brg+`</div>
-                  <div class="item-subtitle">`+hg+` x `+data[i].jml_brg+`</div>
-                  </div>
-                  <div class="item-after">
-                  <i class="fas fa-pencil-alt fa-1x"></i>
-                  <div class="sub_total">`+sub_total+`</div>
-                  </div>
-                  </a>
-                  </li>
-                  `;
-                  $(".ul_orderdetail").html(buatDetail);
-                  jml_krjg+=parseInt(data[i].jml_brg);
-                  biaya_krjg+=parseInt(data[i].sub_total);
-                  $(".jumlah_keranjang").html(jml_krjg + " Barang");
-                  $(".biaya_keranjang").html(convertToRupiah(biaya_krjg));
-                }
-              }else{
-                app.views.main.router.back('/transaksi/', {force: true});
-              }
-            });
-          }
-        });
-      }
-    },
-    {
-      text:'<a class="button button-fill" style="color:white;">Simpan</a>',
-      cssClass: 'btn',
-      color: 'green',
-      onClick: function(){
-        var jml = $('#valBarang').val();
-        var subtot = parseInt(data[0].harga_brg) * jml;
-        app.request({
-          url: "http://localhost/ws/index.php/barang/updateOrderDetail",
-          type: "PUT",
-          data : {
-            'id_brg': data[0].id_brg,
-            'nama_brg': data[0].nama_brg,
-            'kode_brg':data[0].kode_brg,
-            'harga_brg':data[0].harga_brg,
-            'jml_brg': jml,
-            'sub_total': subtot,
-          },
-          cache: false,
-          success: function () {
-            app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-            var buatDetail = "";
-            var biaya_krjg = 0;
-            var jml_krjg = 0;
-            for(i=0; i<data.length; i++){
-              var hg = convertToRupiah(data[i].harga_brg);
-              var sub_total = convertToRupiah(data[i].sub_total);
-              buatDetail +=
-              `
-              <li>
-              <a href="#" id="edit_orderdetail" data-order-detail="`+data[i].id_brg+`" class="item-link item-content">
-              <div class="item-media"><img src="https://cdn.framework7.io/placeholder/people-160x160-1.jpg"
-              width="50" /></div>
-              <div class="item-inner">
-              <div class="item-title">`+data[i].nama_brg+`</div>
-              <div class="item-subtitle">`+hg+` x `+data[i].jml_brg+`</div>
-              </div>
-              <div class="item-after">
-              <i class="fas fa-pencil-alt fa-1x"></i>
-              <div class="sub_total">`+sub_total+`</div>
-              </div>
-              </a>
-              </li>
-              `;
-              $(".ul_orderdetail").html(buatDetail);
-              jml_krjg+=parseInt(data[i].jml_brg);
-              biaya_krjg+=parseInt(data[i].sub_total);
-              $(".jumlah_keranjang").html(jml_krjg + " Barang");
-              $(".biaya_keranjang").html(convertToRupiah(biaya_krjg));
+            success: function() {
+              tampilKeranjang();
             }
-          });         
-        },
-        error: function(e){
-          console.log(e);
+          });
         }
-      });
-    }
-  },
-  {
-    text:'<a class="button button-fill" style="color:white;">Cancel</a>',
-    cssClass: 'btn',
-    color: 'red',
-    onClick: function(){
-      console.log("Cancel");
-    }
-  },
-],
-
-}).open();
+      },
+      {
+        text:'<a class="button button-fill" style="color:white;">Simpan</a>',
+        cssClass: 'btn',
+        color: 'green',
+        onClick: function(){
+          var jml = $('#valBarang').val();
+          var subtot = parseInt(data[0].harga_brg) * jml;
+          app.request({
+            url: "http://localhost/ws/index.php/barang/updateOrderDetail",
+            type: "PUT",
+            data : {
+              'id_brg': data[0].id_brg,
+              'nama_brg': data[0].nama_brg,
+              'kode_brg':data[0].kode_brg,
+              'harga_brg':data[0].harga_brg,
+              'jml_brg': jml,
+              'sub_total': subtot,
+            },
+            cache: false,
+            success: function () {
+              tampilKeranjang();        
+            }
+          });
+        }
+      },
+      {
+        text:'<a class="button button-fill" style="color:white;">Cancel</a>',
+        cssClass: 'btn',
+        color: 'red',
+        onClick: function(){
+          console.log("Cancel");
+        }
+      },
+    ],
+  }).open();
 });  
 })
 
@@ -618,7 +585,7 @@ $(document).on('page:init','.page[data-name="pembayaran"]', function (e) {
   
   // =========================  Setor Ke  ======================================== //
   app.request.json("http://localhost/ws/index.php/barang/kas", function(data){
-  var kas = "";
+  var kas = `<option value="">Pilih Kas</option>`;
   for (i=0; i < data.length; i++) {
     kas += `<option value="`+data[i].nama_kas+`">`+data[i].nama_kas+`</option>`;
     $('.setorKe').html(kas);
@@ -657,75 +624,64 @@ $(document).on('click','#btnBayar', function (e) {
   var catatan = $('#catatan').val();
   var setorKe = $('.setorKe').val();
   
-  var tglTransaksi = new Date();
-  var hari = tglTransaksi.getDay();
-  var bulan = tglTransaksi.getMonth();
-  var tahun = tglTransaksi.getUTCFullYear();
-  var hariTransaksi = tahun+'-'+bulan+'-'+hari;
-
+  app.input.validateInputs('.form-pembayaran');
+  var validTransaksi = $('.form-pembayaran .input-invalid').length === 0;
   
-  app.input.validateInputs('.pembayaran');
-  var valid = $('.form-pembayaran .input-invalid').length === 0;
-  
-  if (valid == true && via !== "belum" && parseInt(jmlBayar) >= parseInt(totBayar)) {
+  if (validTransaksi == true && via !== "belum" && parseInt(jmlBayar) >= parseInt(totBayar) && setorKe !== "") {
     // ===================  Tambah Data Transaksi  ======================== //
     app.request({
       url: "http://localhost/ws/index.php/barang/tambahTransaksi",
       type: "POST",
       data : { 
         'total_biaya' : totBayar,
-        'tgl_transaksi' : hariTransaksi,
         'jenis_bayar' : via,
         'setor_ke' : setorKe,
         'jml_bayar' : jmlBayar,
         'catatan' : catatan
       },
       cache: false,
-    //   complete: function () {
-    //     app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
-    //     for (i=0; i < data.length; i++) {
-    //       var id_brg = data[i].id_brg;
-    //       app.request({
-    //         url: "http://localhost/ws/index.php/barang/kurangiStok",
-    //         type: "PUT",
-    //         data : { 
-    //           'id_brg' : id_brg
-    //         }
-    //       });  
-    //     }
-    //   });
-    // },
+      complete: function () {
+        app.request.json("http://localhost/ws/index.php/barang/orderDetail", function(data){
+        for (i=0; i < data.length; i++) {
+          var id_brg = data[i].id_brg;
+          app.request({
+            url: "http://localhost/ws/index.php/barang/kurangiStok",
+            type: "PUT",
+            data : { 
+              'id_brg' : id_brg
+            }
+          });  
+        }
+      });
+    },
     success: function (response) {
-      // app.popup.create({
-      //   content: `
-      //   <div class="popup sukses_bayar">
-      //   <div class="block">
-      //   <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
-      //   <div class="title">Sukses!</div>
-      //   <div class="text_sukses">
-      //   <p></p>
-      //   </div>
-      //   <div class="row">
-      //   <a data-cetak-transaksi="`+response+`"><button class="col button button-fill btnCetak">Cetak</button></a>
-      //   <a ><button class="col button button-fill btnKembali">Kembali</button></a>
-      //   </div>
-      //   </div>
-      //   </div>
-      //   `,
-      // }).open();
-      console.log(response);
+      app.popup.create({
+        content: `
+        <div class="popup sukses_bayar">
+        <div class="block">
+        <div class="title-logo"><img src="./img/ofc.png" width="70"></div>
+        <div class="title">Sukses!</div>
+        <div class="text_sukses">
+        <p></p>
+        </div>
+        <div class="row">
+        <a ><button class="col button button-fill btnCetak" data-cetak-transaksi=`+response+`>Cetak</button></a>
+        <a ><button class="col button button-fill btnKembali">Kembali</button></a>
+        </div>
+        </div>
+        </div>
+        `,
+      }).open();
     },
   });
   // ===================  End Tambah Data Transaksi  ======================== //  
 }else if(via == "belum"){
   alert("pilih pembayaran melalui transfer atau tunai bos!");
-}else if(valid == false){
+}else if(validTransaksi == false){
   app.input.validateInputs('.pembayaran');
 }else if(parseInt(jmlBayar) < parseInt(totBayar)){
   alert("Bayarnya kurang lah bang");
 }
-
-
 });
 // =========================  End Button btnBayar  ======================================== //
 
@@ -741,8 +697,8 @@ $(document).on('click', '.btnKembali',function () {
 // =========================  Button btnCetak  ======================================== //
 
 $(document).on('click', '.btnCetak',function () {
-  hapusOrderDetail();
-  app.views.main.router.navigate('/cetak_transaksi/', {reloadCurrent: true, animate: false, ignoreCache: true});
+  var id_Cetak = $(this).attr('data-cetak-transaksi');
+  app.views.main.router.navigate({path: '/cetak_transaksi/'+id_Cetak, name: 'cetak_transaksi', params: {idCetak: id_Cetak}});
 })
 
 // =========================  End Button btnCetak  ======================================== //
@@ -905,4 +861,132 @@ $(document).on('page:init', function (e) {
   $('#sukses_pengeluaran').on('click', function () {
     sukses_button.open();
   });
+})
+
+
+//==================================================================================================//
+//============================    LAPORAN TRANSAKSI    ============================//
+//==================================================================================================//
+
+
+
+$(document).on('page:init','.page[data-name="laporan_transaksi"]', function (e) {
+  var date = new Date();
+  var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  
+  $(document).on('click', '#btnBulan', function (e) {
+    app.dialog.create({
+      buttons: [
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Januari</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Februari</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Maret</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">April</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Mei</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Juni</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Juli</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Agustus</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">September</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">Oktober</button>'
+        },
+        {
+          cssClass: 'dialogBulan',
+          text: '<button class="col button button-fill">November</button>'
+        },
+        {
+          text: '<button class="col button button-fill">Desember</button>',
+          cssClass: 'dialogBulan',
+        },
+      ],
+      verticalButtons: true,
+      onClick: function (e, index) {
+        var dbulan = index + 1;
+        $('#btnBulan').text(bulan[index]);
+        app.request.json("http://localhost/ws/index.php/barang/laporanTrans?bulan="+dbulan, function(data){
+        var laporan = "";
+        if (data.length !== 0) {
+          for (i=0; i < data.length; i++) {
+            laporan += `
+            <div class="kotak">
+            <a href="/cetak_transaksi/:`+data[i].invoice+`">  
+            <div class="isi1">
+            <div class="isi1_1">`+date.getDay(data[i].tgl_transaksi)+`</div>
+            <div class="isi1_1_1">  
+            <div class="isi1_1_2">`+bulan[date.getMonth(data[i].tgl_transaksi)]+`</div>
+            <div class="isi1_1_3">`+date.getFullYear(data[i].tgl_transaksi)+`</div>
+            </div>
+            </div>
+            <div class="isi2">  
+            <div class="isi2_1">`+data[i].invoice+`</div>
+            <div class="isi2_2">`+convertToRupiah(data[i].total_biaya)+`</div>
+            </div>
+            </a>
+            </div>
+            `;
+            $('.isiLaporan').html(laporan);
+          }
+        }else{
+          $('.isiLaporan').html('kosong');
+        }
+      });
+    },
+  }).open();
+})
+
+$('#btnBulan').text(bulan[date.getMonth()]);
+
+var bln = "";
+app.request.json("http://localhost/ws/index.php/barang/laporanTrans?bulan="+bln, function(data){
+console.log(data);
+
+var laporan = "";
+for (i=0; i < data.length; i++) {
+  laporan += `
+  <div class="kotak">
+  <a href="/cetak_transaksi/`+data[i].invoice+`">
+  <div class="isi1">
+  <div class="isi1_1">`+date.getDay(data[i].tgl_transaksi)+`</div>
+  <div class="isi1_1_1">  
+  <div class="isi1_1_2">`+bulan[date.getMonth(data[i].tgl_transaksi)]+`</div>
+  <div class="isi1_1_3">`+date.getFullYear(data[i].tgl_transaksi)+`</div>
+  </div>
+  </div>
+  <div class="isi2">  
+  <div class="isi2_1">`+data[i].invoice+`</div>
+  <div class="isi2_2">`+convertToRupiah(data[i].total_biaya)+`</div>
+  </div>
+  </a>
+  </div>
+  `;
+  $('.isiLaporan').html(laporan);
+}
+});
 })

@@ -117,7 +117,7 @@ var routes = [
       transition: 'f7-push',
     },
   },
-
+  
   // Pengeluaran
   {
     path: '/kategori_pengeluaran/',
@@ -143,43 +143,74 @@ var routes = [
     },
   },
   {
-    path: '/cetak_transaksi/',
-    url: './pages/lain/cetak_transaksi.html',
-    options: {
-      transition: 'f7-push',
+    path: '/cetak_transaksi/:idCetak',
+    name: 'cetak_transaksi',
+    async: function (routeTo, routeFrom, resolve, reject) {
+      var idCetak = routeTo.params.idCetak;
+      var router = this;
+      var app = router.app;
+      
+      app.request({
+        url: "http://localhost/ws/index.php/barang/tampilCetak?invoice="+idCetak,
+        dataType: 'json',
+        method: 'GET',
+        cache: false,
+        success: function (data) {
+          console.log(data);
+          app.popup.close();
+          resolve(
+            {
+              componentUrl: './pages/lain/cetak_transaksi.html'
+            }, 
+            {
+              context: {
+                info: data,
+              }
+            }
+            );
+          },
+          error: function () {
+            app.dialog.alert('Failed To Make Request!');
+            reject();
+          }
+        });
+      },
+      options: {
+        transition: 'f7-push',
+      },
     },
-  },
-  {
-    path: '/retur_barang/',
-    url: './pages/lain/retur_barang.html',
-    options: {
-      transition: 'f7-push',
+    {
+      path: '/retur_barang/',
+      url: './pages/lain/retur_barang.html',
+      options: {
+        transition: 'f7-push',
+      },
     },
-  },
-
-  // Supplier
-  {
-    path: '/supplier/',
-    url: './pages/supplier/supplier.html',
-    options: {
-      transition: 'f7-push',
+    
+    // Supplier
+    {
+      path: '/supplier/',
+      url: './pages/supplier/supplier.html',
+      options: {
+        transition: 'f7-push',
+      },
     },
-  },
-  {
-    path: '/tambah_supplier/',
-    url: './pages/supplier/tambah_supplier.html',
-    options: {
-      transition: 'f7-push',
+    {
+      path: '/tambah_supplier/',
+      url: './pages/supplier/tambah_supplier.html',
+      options: {
+        transition: 'f7-push',
+      },
     },
-  },
-  
-
-  // Default route (404 page). MUST BE THE LAST
-  {
-    path: '(.*)',
-    url: './pages/404.html',
-    options: {
-      transition: 'f7-push',
+    
+    
+    // Default route (404 page). MUST BE THE LAST
+    {
+      path: '(.*)',
+      url: './pages/404.html',
+      options: {
+        transition: 'f7-push',
+      },
     },
-  },
   ];
+  
