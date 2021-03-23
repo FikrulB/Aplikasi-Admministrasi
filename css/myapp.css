@@ -704,7 +704,7 @@ button > .biaya{
 	padding: 1rem calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
 }
 .text_laba, .angka_laba{
-
+	
 	width: 50%;
 	text-transform: uppercase;
 	font-size: var(--f7-list-item-title-font-size);
@@ -757,12 +757,12 @@ button > .biaya{
 
 .sukses_bayar .block{
 	padding: 0;
-    margin: 0;
-    text-align: center;
-    font-size: 3rem;
-    position: absolute;
-    width: 100%;
-    top: 30%;
+	margin: 0;
+	text-align: center;
+	font-size: 3rem;
+	position: absolute;
+	width: 100%;
+	top: 30%;
 }
 .sukses_bayar .title-logo{
 	margin-bottom: .5rem;
@@ -777,4 +777,11 @@ button > .biaya{
 }
 .sukses_bayar button{
 	margin-right: 1rem;
+}
+
+.dialog-inner{
+	padding: .7rem;
+}
+.dialogBulan{
+	height: 40px !important; 
 }
